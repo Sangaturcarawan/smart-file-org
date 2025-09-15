@@ -1,48 +1,52 @@
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Version](https://img.shields.io/badge/Version-2.0-yellow)
+![Platform](https://img.shields.io/badge/Platform-Windows%20|%20macOS%20|%20Linux-lightgrey)
+![Code Size](https://img.shields.io/github/languages/code-size/Sangaturcarawan/smart-file-org)
+![Last Commit](https://img.shields.io/github/last-commit/Sangaturcarawan/smart-file-org)
+
 # Smart File Organizer
 
 A personal Python project that automatically organizes files in your **Downloads** folder into categorized subfolders using `os` and `shutil` modules. 
 
-This is the **first MVP (minimum viable product)**. Future iterations will include `datetime` module for sorting by date, CLI input, and cross-OS support.
+This is the **second iteration (v2.0)**. Future iterations will include `datetime` module for sorting by date, CLI input, and cross-OS support.
 
 ---
 
 ## Features
 - Organizes files in your Downloads folder
-  - Currently requires specifying the Downloads folder path manually
-  - Future versions will auto-detect Downloads folder path
+  - Dynamically detects the Downloads folder
+  - Moves unmatched files to **Others** subfolder
 - Categorizes files into:
   - Future versions will auto-detect file type without much or any hardcoding
 
 **Subfolder** | **File Extensions**
 :---: | :---
-**Archives** | - `.zip`<br> - `.rar`<br> - `.gz`<br>
-**Documents** | - `.docx`<br> - `.pdf`<br> - `.txt`<br> - `.xlsx`<br>
-**Images** | - `.jpg`<br> - `.jpeg`<br> - `.png`<br> - `.gif`<br> - `.bmp`<br>
-**Videos** | - `.avi`<br> - `.mkv`<br> - `.mov`<br> - `.mp4`<br>
+**Audio** | - `.aac`<br> - `.flac`<br> - `.mp3`<br> - `.wav`
+**Archives** | - `.zip`<br> - `.rar`<br> - `.gz`
+**Documents** | - `.docx`<br> - `.pdf`<br> - `.txt`<br> - `.xlsx`
+**Images** | - `.jpg`<br> - `.jpeg`<br> - `.png`<br> - `.gif`<br> - `.bmp`
+**Videos** | - `.avi`<br> - `.mkv`<br> - `.mov`<br> - `.mp4`
   
-- Creates category folders automatically if they do not exist
+- Modular code with helper functions:
+  - `get_fil_pth()` &rarr; generates file path
+  - `mak_dir()` &rarr; creates subfolders if they do not exist
+  - `mov_fil()` &rarr; moves files to correct subfolder & prints an update
 
 ---
 
 ## Installation & Usage
-
-1. Clone the repo:
+1. Open a terminal (Linux/macOS) or Gitbash / WSL (Windows)
+2. Clone the repo:
 ```bash
-git clone https://github.com/YOUR_USERNAME/smart-file-org.git
+git clone https://github.com/Sangaturcarawan/smart-file-org.git
 cd smart-file-org
 ```
-2. Open the Python file `organizer.py` and update the `src_fol` variable with your Downloads folder path.
-
-```python
-# Set your Downloads folder path
-src_fol = r"C:\Users\YOUR_USERNAME\Downloads"
-```
-
 3. Run the script:
 ```bash
 python3 organizer.py
 ```
-Files in your Downloads folder will be moved to the appropriate category subfolder
+Future updates will allow you to use CLI input to customize your source & destination folders
 
 # Updates / Version History
 Please visit [CHANGELOG.md](CHANGELOG.md)
