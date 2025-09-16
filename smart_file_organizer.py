@@ -1,62 +1,78 @@
-import os
+#!/usr/bin/env python3
+# IMPORT MODULES
+from pathlib import Path
 import shutil
+from typing import Dict, Iterable
 
-def get_fil_pth(fol, fil_nam):
-    return os.path.join(fol, fil_nam)
+# USER CONFIGURATION: future CLI input
+SRC_FOL = Path.home() / "Downloads" # SOURCE FOLDER: dynamically detects Downloads file path, cross-OS
+DST_FOL = SRC_FOL # DESTINATION FOLDER
+OTH_CAT = "Others"
 
-def mak_dir(fol_pth):
-    if not os.path.exists(fol_pth):
-        os.makedirs(fol_pth) # make folder if it does not exist
-        print(f"{os.path.basename(fol_pth)} subfolder has been created.")
-
-def mov_fil(fil_pth, dst_fol, fil_nam):
-    mak_dir(dst_fol)
-    new_fil_pth = get_fil_pth(dst_fol, fil_nam)
-    shutil.move(fil_pth, new_fil_pth)
-    print(f"Moved {fil_nam} to {os.path.basename(dst_fol)}")
-
-# USER CONFIGURATION 
-# to be expanded later by using CLI input
-# SOURCE FOLDER
-src_fol = os.path.join(os.path.expanduser("~"), "Downloads")
-#  dynamically generates file path to Downloads folder
-#  works cross-OS
-
-# DESTINATION FOLDER
-dst_fol = src_fol
-# can be changed manually
-# will allow CLI input later
-
-# FILE CATEGORIES: add / remove extensions here
-fil_cat = {
+# FILE CATEGORIES: add / remove extensions here, future CLI, GUI, JSON
+FIL_CAT: Dict[str, Iterable[str]] = {
     "Audio": [".aac", ".flac", ".mp3", ".wav"],
     "Archives": [".gz", ".rar", ".zip"],
     "Documents": [".docx", ".pdf", ".txt", ".xlsx"],
     "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp"],
     "Videos": [".avi", ".mkv", ".mov", ".mp4"]
 }
-# allow for user input in the future using CLI and or GUI
-# allow for use of JSON file
 
-# ORGANIZE FILES IN SOURCE FOLDER
-for fil_nam in os.listdir(src_fol): # list out all items inside source folder
-    fil_pth = get_fil_pth(src_fol, fil_nam) # generate file paths to each item
+# HELPER FUNCTIONS
+def mak_dir(path: Path) -> None: 
+    """Makes a directory if it does not exist."""
+    if not path.exists(): # Check that the file path not available in the system
+        path.mkdir(parents=True, exist_ok=True) # Create folders including parent folders if they do not exist
+        print(f"{path.name} subfolder created")
 
-    if os.path.isdir(fil_pth): # filter out folders first
-        continue
+def _nam_col(dst: Path) -> Path: 
+    """Generates a new file path if there is a naming conflict."""
+    if not dst.exists():
+        return dst # no conflict, name available so returns the original Path
+    par = dst.parent # extract parent folder path
+    stm = dst.stem # file name without extension
+    ext = dst.suffix # file extension with '.'
 
-    fil_ext = os.path.splitext(fil_nam)[-1].lower() # get file extension
+    i = 1
+    while True:
+        pos_nam = par / f"{stm} ({i}){ext}" 
+        # Create a new filename like "file (1).ext", etc.
+        if not pos_nam.exists(): # Check whether file name is available
+            return pos_nam # Return available new path
+        i += 1 # Increments number, try again
 
-    # CHECK EXTENSION CATEGORY
-    for cat, ext_lst in fil_cat.items():
-        if fil_ext in ext_lst:
-            cat_fol = get_fil_pth(dst_fol, cat) # make category subfolder
-            mov_fil(fil_pth, cat_fol, fil_nam)
-            break
+def mov_fil(src: Path, dst: Path) -> None:
+    """Move files from source folder to destination folder."""
+    mak_dir(dst) # Make directory for destination file path
+    fin_dst = _nam_col(dst / src.name) # Check that there is no naming conflict for file
+    shutil.move(str(src), str(fin_dst)) #shutil.move requires str paths
+    print(f"Moved {src.name:<30} \u2192 {fin_dst}")
 
-    # IF NO CATEGORY FOUND, MOVE TO OTHERS FOLDER
-    else:
-        oth_fol = get_fil_pth(dst_fol, "Others")
-        mov_fil(fil_pth, oth_fol, fil_nam)
+def org_fil(src: Path, dst: Path, cats: Dict[str, Iterable[str]]) -> None:
+    """Organize files in file system."""
+    if not src.exists() or not src.is_dir(): # Check whether source folder exists & is a folder
+        raise ValueError(f"{src} does not exist or is not a directory")
 
-print("Files organized successfully")
+    for item in src.iterdir(): # Iterate through contents of source folder
+        if item.is_dir():
+            continue # Filter out directories
+        if item.name.startswith('.'):
+            continue # Filter out hidden files
+
+        ext = item.suffix.lower()
+        for cat, ext_lst in cats.items(): # CHECK EXTENSION CATEGORY
+            if ext in ext_lst:
+                mov_fil(item, dst / cat)
+                break
+        else: # IF NO CATEGORY FOUND, MOVE TO OTHERS FOLDER
+            mov_fil(item, dst / OTH_CAT)
+
+    print("Files organized successfully")
+
+# ENTRY POINT
+def main() -> None:
+    """Isolates the running of the code so it is not run if imported."""
+    org_fil(SRC_FOL, DST_FOL, FIL_CAT)
+
+if __name__ == "__main__":
+    main()
