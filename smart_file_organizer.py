@@ -66,9 +66,35 @@ class FileOrg:
 
 # ENTRY POINT
 def main() -> None:
-    """Isolates the running of the code so it is not run if imported."""
-    your_src = Path.home() / "Downloads" / "Test_Files"
-    org = FileOrg(src=your_src)
+    """Ask user input for folders, rather than hardcoding"""
+    while True:
+        src_inp = input("Enter source folder, if any (leave blank to use ~/Downloads): ").strip()
+        usr_src = Path(src_inp).expanduser().resolve() if src_inp else Path.home() / "Downloads"
+        if usr_src.exists() and usr_src.is_dir():
+            break
+        print(f"Error: '{usr_src}' does not exist or is not a folder.\nTry again.\n")
+
+    while True:    
+        dst_inp = input("Enter destination folder, if any (leave blank to use ~/Downloads): ").strip()
+        usr_dst = Path(dst_inp).expanduser().resolve() if dst_inp else usr_src
+        if usr_dst.exists() and usr_dst.is_dir():
+            break
+        elif not usr_dst.exists() and not usr_dst.is_dir():
+            print(f"{usr_dst} exists, but it is not a folder.\nTry again.\n")
+            continue
+        else:
+            mak_new_fol = input(f"Destination folder '{usr_dst}' does not exist. Would you like to create it? (y/n): ").strip().lower()
+            if mak_new_fol == "y":
+                usr_dst.mkdir(parents=True, exist_ok=True)
+                print(f"Folder '{usr_dst}' created")
+                break
+            else:
+                print("Please enter a valid destination folder")
+
+    oth_inp = input("Enter folder name for uncategorized files (default = Others): ").strip()
+    usr_oth = oth_inp if oth_inp else "Others"
+
+    org = FileOrg(src=usr_src, dst=usr_dst, oth=usr_oth)
     org.org_fil()
 
 if __name__ == "__main__":

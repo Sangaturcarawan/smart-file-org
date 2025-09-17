@@ -8,8 +8,8 @@ def dl8_samples():
     if not TST_DIR.exists() and not TST_DIR.is_dir():
         print("No sample files or folders found")
         return
-    confirm = input(f"Are you sure you want to delete ALL files in {TST_DIR}? [y/n]:")
-    if confirm.lower() == "y":
+    confirm = input(f"Are you sure you want to delete ALL files in {TST_DIR}? [y/n]:").strip().lower()
+    if confirm == "y":
         shutil.rmtree(TST_DIR)
         print(f"All sample files & folders deleted in {TST_DIR}")
     else:

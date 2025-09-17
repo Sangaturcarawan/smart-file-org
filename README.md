@@ -1,6 +1,6 @@
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Version](https://img.shields.io/badge/Version-3.0-yellow)
+![Version](https://img.shields.io/badge/Version-4.0-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20|%20macOS%20|%20Linux-lightgrey)
 ![Code Size](https://img.shields.io/github/languages/code-size/Sangaturcarawan/smart-file-org)
 ![Last Commit](https://img.shields.io/github/last-commit/Sangaturcarawan/smart-file-org)
@@ -11,7 +11,7 @@
 
 A personal Python project that automatically organizes files in your **Downloads** folder into categorized subfolders using `pathlib`, `shutil` and `typing` modules.
 
-This is the **third iteration (v3.0)**. Future iterations will include `datetime` module for sorting by date, CLI input, and cross-OS support.
+This is the **fourth iteration (v4.0)**. Future iterations will include `datetime` module for sorting by date, use of GUI and sorting based on metadata and regular expressions.
 
 ---
 
@@ -21,7 +21,12 @@ This is the **third iteration (v3.0)**. Future iterations will include `datetime
   - Dynamically detects the Downloads folder
   - Moves unmatched files to **Others** subfolder
 - Categorizes files into:
-  - Future versions will auto-detect file type without much or any hardcoding
+  - Future versions will auto-detect file types dynamically
+- CLI user input: 
+  - source and destination folders (default = ~/Downloads)
+  - folder to sort uncategorized files (default = Others)
+- Cross-OS compatibility (Windows/macOS/Linux)
+
 
 | **Subfolder** | **File Extensions**                                           |
 | :-----------: | :------------------------------------------------------------ |
@@ -34,7 +39,7 @@ This is the **third iteration (v3.0)**. Future iterations will include `datetime
 - Modular code with helper functions:
   - `mak_dir()` &rarr; creates subfolders if they do not exist
   - `mov_fil()` &rarr; moves files to correct subfolder & prints an update
-  - `_nam_col()` → handles naming conflicts by creating unique filenames
+  - `_nam_chk()` → handles naming conflicts by creating unique filenames
   - `org_fil()` → carries out file organization by category
 
 ---
@@ -44,6 +49,7 @@ This is the **third iteration (v3.0)**. Future iterations will include `datetime
 ```mermaid
 classDiagram
 class FileOrg {
+  + __init__(src: Path, dst: Path=None, cats: dict=None, oth: str="Others")
   + Path src
   + Path dst
   + dict cats
@@ -105,11 +111,11 @@ Moved song.mp3   → Audio
 Moved archive.zip → Archives
 ```
 
-## Future Updates (v3.0+)
+## Future Updates (v4.0+)
 
 - Handle multi-part file extensions (e.g., `.tar.gz`) correctly.
 - Sort files by creation or modification date using `datetime` module.
-- Add optional GUI or CLI input to customize source/destination folders.
+- Add GUI input to customize source/destination folders.
 - Auto-detect file types without hardcoding extensions in dictionaries.
 - Cross-OS enhancements and configuration via JSON.
 
