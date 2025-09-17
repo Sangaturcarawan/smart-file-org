@@ -9,27 +9,28 @@
 
 # Smart File Organizer
 
-A personal Python project that automatically organizes files in your **Downloads** folder into categorized subfolders using `pathlib`, `shutil` and `typing` modules. 
+A personal Python project that automatically organizes files in your **Downloads** folder into categorized subfolders using `pathlib`, `shutil` and `typing` modules.
 
 This is the **third iteration (v3.0)**. Future iterations will include `datetime` module for sorting by date, CLI input, and cross-OS support.
 
 ---
 
 ## Features
+
 - Organizes files in your Downloads folder
   - Dynamically detects the Downloads folder
   - Moves unmatched files to **Others** subfolder
 - Categorizes files into:
   - Future versions will auto-detect file type without much or any hardcoding
 
-**Subfolder** | **File Extensions**
-:---: | :---
-**Audio** | - `.aac`<br> - `.flac`<br> - `.mp3`<br> - `.wav`
-**Archives** | - `.zip`<br> - `.rar`<br> - `.gz`
-**Documents** | - `.docx`<br> - `.pdf`<br> - `.txt`<br> - `.xlsx`
-**Images** | - `.jpg`<br> - `.jpeg`<br> - `.png`<br> - `.gif`<br> - `.bmp`
-**Videos** | - `.avi`<br> - `.mkv`<br> - `.mov`<br> - `.mp4`
-  
+| **Subfolder** | **File Extensions**                                           |
+| :-----------: | :------------------------------------------------------------ |
+|   **Audio**   | - `.aac`<br> - `.flac`<br> - `.mp3`<br> - `.wav`              |
+| **Archives**  | - `.zip`<br> - `.rar`<br> - `.gz`                             |
+| **Documents** | - `.docx`<br> - `.pdf`<br> - `.txt`<br> - `.xlsx`             |
+|  **Images**   | - `.jpg`<br> - `.jpeg`<br> - `.png`<br> - `.gif`<br> - `.bmp` |
+|  **Videos**   | - `.avi`<br> - `.mkv`<br> - `.mov`<br> - `.mp4`               |
+
 - Modular code with helper functions:
   - `mak_dir()` &rarr; creates subfolders if they do not exist
   - `mov_fil()` &rarr; moves files to correct subfolder & prints an update
@@ -38,27 +39,54 @@ This is the **third iteration (v3.0)**. Future iterations will include `datetime
 
 ---
 
+## UML Diagram / Architecture
+
+```mermaid
+classDiagram
+class FileOrg {
+  + Path src
+  + Path dst
+  + dict cats
+  + str oth
+  + org_fil() -> None
+  - _cat_fil(fil: Path) -> None
+  - _mov_fil(src: Path, dst: Path) -> None
+  - _mak_dir(pth: Path) -> None
+  - _nam_chk(pth: Path) -> Path
+}
+```
+
+---
+
 ## Installation & Usage
+
 1. Open a terminal (Linux/macOS) or Gitbash / WSL (Windows)
 2. Clone the repo:
+
 ```bash
 git clone https://github.com/Sangaturcarawan/smart-file-org.git
 cd smart-file-org
 ```
+
 3. Run the script:
+
 ```bash
 python3 organizer.py
 ```
 
 ### Example
+
 Before running the script:
+
 ```text
 Downloads/
 ├─ report.pdf
 ├─ song.mp3
 ├─ archive.zip
 ```
+
 After running the script:
+
 ```text
 Downloads/
 ├─ Documents/
@@ -68,7 +96,9 @@ Downloads/
 ├─ Archives/
 │  └─ archive.zip
 ```
+
 Output:
+
 ```text
 Moved report.pdf → Documents
 Moved song.mp3   → Audio
@@ -76,6 +106,7 @@ Moved archive.zip → Archives
 ```
 
 ## Future Updates (v3.0+)
+
 - Handle multi-part file extensions (e.g., `.tar.gz`) correctly.
 - Sort files by creation or modification date using `datetime` module.
 - Add optional GUI or CLI input to customize source/destination folders.
@@ -83,7 +114,9 @@ Moved archive.zip → Archives
 - Cross-OS enhancements and configuration via JSON.
 
 ## Updates / Version History
+
 Please visit [CHANGELOG.md](CHANGELOG.md)
 
 ## License
+
 This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
