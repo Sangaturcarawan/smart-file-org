@@ -1,3 +1,4 @@
+# Smart File Organizer
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Version](https://img.shields.io/badge/Version-4.0-yellow)
@@ -7,7 +8,6 @@
 
 [View Code on GitHub](https://github.com/Sangaturcarawan/smart-file-org)
 
-# Smart File Organizer
 
 A personal Python project that automatically organizes files in your **Downloads** folder into categorized subfolders using `pathlib`, `shutil` and `typing` modules.
 
