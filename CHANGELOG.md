@@ -3,7 +3,20 @@
 All notable changes to this project will be documented here.
 
 ---
+## [v5.0] – 2025-09-18
+### Added / Improved
+- Added **PyQt6 GUI** for selecting source and destination folders.
+- Added input for specifying folder for uncategorized files.
+- Fully cross-OS compatible, including Windows, macOS, Linux, and WSL.
+- Integrated with `FileOrg` class (v4.0) for modular file organization.
+- Prevents file name conflicts by auto-renaming duplicates.
+- GUI signals properly connected to browsing and organizing functions.
 
+### Future
+- Add metadata-based sorting and file filtering using regex.
+- GUI enhancements (drag-and-drop support).
+- Optional web app with Flask or Django.
+---
 ## **[v4.0] – 2025-09-18**
 ### Refactored / Improved
 - Added **OOP structure** using `FileOrg` class.
